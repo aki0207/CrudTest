@@ -17,8 +17,6 @@ import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
-import com.example.login.app.login.LoginForm;
-import com.example.login.domain.model.User;
 import com.example.test.domain.model.Crud;
 import com.example.test.domain.service.CrudService;
 import com.github.dozermapper.core.Mapper;
@@ -48,26 +46,24 @@ public class CrudController {
 		return "crud/list"; 
 	}
 	
-//	@PostMapping("create")
-//    public String create(@Valid Form form, BindingResult bindingResult,
-//            Model model, RedirectAttributes attributes) {
-//
-//        if (bindingResult.hasErrors()) {
-//            return list(model);
-//        }
-//        Crud crud = beanMapper.map(form,Crud.class);
-//        
-//        try {
-//        	crudService.create();
-//        } catch(BusinessException e) {
-//        	model.addAttribute(e.getResultMessages());
-//			return list(model);
-//        }
-//        
-//        
-//        return "crud/list";
-//
-//    }
-//	
+	@PostMapping("create")
+    public String create(@Valid Form form, BindingResult bindingResult,
+            Model model, RedirectAttributes attributes) {
+
+        if (bindingResult.hasErrors()) {
+            return list(model);
+        }
+        Crud crud = beanMapper.map(form,Crud.class);
+        
+        try {
+        	crudService.create(crud);
+        } catch(BusinessException e) {
+        	model.addAttribute(e.getResultMessages());
+			return list(model);
+        }
+        
+        return "crud/list";
+    }
+	
 
 }

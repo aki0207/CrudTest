@@ -7,4 +7,6 @@ import com.example.test.domain.model.Crud;
 public interface CrudService {
 
 	Collection<Crud> findAll();
+	
+	Crud create(Crud crud);
 }

@@ -1,6 +1,7 @@
 package com.example.test.domain.service;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -18,5 +19,14 @@ public class CrudServiceImpl implements CrudService {
 	@Override
 	public Collection<Crud> findAll() {
 		return crudRepository.findAll();
+	}
+
+	@Override
+	public Crud create(Crud crud) {
+		
+		String crudId = UUID.randomUUID().toString();
+		crud.setUserId(crudId);
+		crudRepository.create(crud);
+		return crud;
 	}
 }
