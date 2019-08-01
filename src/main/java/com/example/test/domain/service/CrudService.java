@@ -7,6 +7,6 @@ import com.example.test.domain.model.Crud;
 public interface CrudService {
 
 	Collection<Crud> findAll();
-	
+	Crud findOne(Crud crud);
 	Crud create(Crud crud);
 }

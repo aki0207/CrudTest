@@ -8,6 +8,6 @@ import com.example.test.domain.model.Crud;
 public interface CrudRepository {
 
 	Collection<Crud> findAll();
-	
-	void create(Crud crund);
+	Crud findOne(Crud crud);
+	void create(Crud crud);
 }

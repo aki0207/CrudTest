@@ -29,4 +29,9 @@ public class CrudServiceImpl implements CrudService {
 		crudRepository.create(crud);
 		return crud;
 	}
+
+	@Override
+	public Crud findOne(Crud crud) {
+		return crudRepository.findOne(crud);
+	}
 }

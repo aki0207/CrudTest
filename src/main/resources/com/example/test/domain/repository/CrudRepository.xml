@@ -23,6 +23,21 @@
     ]]>
     </select>
     
+     <select id="findOne" resultMap="crudResultMap">
+    <![CDATA[
+        SELECT
+            user_id,
+            mail_address,
+            password
+        FROM
+            crud
+        WHERE
+        	mail_address = #{mailAddress}
+        AND
+        	password = #{password}
+    ]]>
+    </select>
+    
      <insert id="create" parameterType="Crud">
     <![CDATA[
         INSERT INTO crud

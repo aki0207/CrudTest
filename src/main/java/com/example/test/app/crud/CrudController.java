@@ -25,45 +25,74 @@ import com.github.dozermapper.core.Mapper;
 @Controller
 @RequestMapping("crud")
 public class CrudController {
-	
+
 	@Inject
 	CrudService crudService;
-	
+
 	@Inject
 	Mapper beanMapper;
-	
+
 	@ModelAttribute 
 	public Form setUpForm() {
 		Form form = new Form();
 		return form;
 	}
-	
-	
-	@GetMapping("list")
-	public String list(Model model) {
+
+
+	@GetMapping("entry")
+	public String entry(Model model) {
 		Collection<Crud> cruds = crudService.findAll();
 		model.addAttribute("cruds", cruds); 
-		return "crud/list"; 
+		return "crud/entry"; 
+	}
+
+	@PostMapping("create")
+	public String create(@Valid Form form, BindingResult bindingResult,
+			Model model, RedirectAttributes attributes) {
+
+		if (bindingResult.hasErrors()) {
+			return entry(model);
+		}
+		Crud crud = beanMapper.map(form,Crud.class);
+
+		try {
+			crudService.create(crud);
+		} catch(BusinessException e) {
+			model.addAttribute(e.getResultMessages());
+			return entry(model);
+		}
+
+		return "redirect:/crud/entry";
 	}
 	
-	@PostMapping("create")
-    public String create(@Valid Form form, BindingResult bindingResult,
-            Model model, RedirectAttributes attributes) {
+	@GetMapping("login")
+	public String login(Model model) {
+		
+		return "crud/login"; 
+	}
 
-        if (bindingResult.hasErrors()) {
-            return list(model);
-        }
-        Crud crud = beanMapper.map(form,Crud.class);
-        
-        try {
-        	crudService.create(crud);
-        } catch(BusinessException e) {
-        	model.addAttribute(e.getResultMessages());
-			return list(model);
-        }
-        
-        return "crud/list";
-    }
-	
 
+	@PostMapping("login")
+	public String login(@Valid Form form, BindingResult bindingResult,
+			Model model, RedirectAttributes attributes) {
+		
+		if (bindingResult.hasErrors()) {
+			return entry(model);
+		}
+		Crud crud = beanMapper.map(form,Crud.class);
+
+		try {
+			crud = crudService.findOne(crud);
+			if(crud!= null) {
+				model.addAttribute("crud", crud); 
+				return "crud/top"; 
+				//return "redirect:/crud/top"; 
+			} else {
+				return "redirect:/crud/login"; 
+			}
+		} catch(BusinessException e) {
+			model.addAttribute(e.getResultMessages());
+			return entry(model);
+		}
+	}
 }
